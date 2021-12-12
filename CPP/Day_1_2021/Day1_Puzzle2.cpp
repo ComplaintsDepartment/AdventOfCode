@@ -25,10 +25,10 @@ int main()
             inputData.push_back(std::stoi(curLine)); // Put the entire file into int vectors
         }
 
-        lastVal = inputData[0] + inputData[1] + inputData[2]; // Hard code off the first set so we don't count i
-        for ( int i = 1; i < inputData.size(); i++ )
+        lastVal = inputData.at(0) + inputData.at(1) + inputData.at(2); // Hard code off the first set so we don't count i
+        for ( int i = 1; i < inputData.size()-2; i++ )
         {
-            curVal = inputData[i] + inputData[i+1] + inputData[i+2]; 
+            curVal = inputData.at(i) + inputData.at(i+1) + inputData.at(i+2); 
             if ( curVal > lastVal )
             {
                 count++;
