@@ -77,7 +77,7 @@ int main()
     std::string curLine;
     std::vector<std::string> inputData;
     std::vector<std::string>::iterator iter;
-    std::ifstream inputFile;// Open for reading only with ifstream
+    std::ifstream inputFile("InputFile.txt", std::ifstream::in); // Open for reading only with ifstream
     int distance(0);
     int depth(0);
     int aim(0);
@@ -97,11 +97,8 @@ int main()
     mapDirs["up"] = DirUp;
     mapDirs["down"] = DirDown;
 
-//    inputFile.open("InputFile.txt");
-    inputFile.open("InputFile.txt");
+    // inputFile.open("InputFile.txt"); // Open is unnecessary as we opened it above in the declaration
     inputData = getInputData (inputFile);
-
-
     
     for (int i=0; i < inputData.size() ; i++)
     {   
