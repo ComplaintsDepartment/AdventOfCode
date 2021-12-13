@@ -35,14 +35,11 @@ Use the binary numbers in your diagnostic report to calculate the gamma rate and
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <map>
 #include "getInputData.h"
 
 int main() 
@@ -74,7 +71,10 @@ int main()
             }
         }
     }
-    
+   
+    // Now that we've incremented all the ones, develop a State Vector
+    // that will keep track of if it had a larger than mean High bit
+    // value, or Low
     for ( int i=0 ; i < storeState.size() ; i++ ) {
         if ( storeHighs.at(i) > inputSize/2 ) {
             storeState.at(i) = 1;
@@ -82,10 +82,19 @@ int main()
     }
     
     // Develop the decimal value now
+    // We've stored the high state if the high bit was observed in the majority
+    // of the cases. Since we're been keeping it as an integer flag, we can
+    // develop the decimal by bit shifting that value to the appropriate position.
+    // Since we we working with a string, which was LSB left as we read the string,
+    // the store values have to be pushed forward from the LSB from lowest number
+    // manner in which we stored them.
     for ( int i=0 ; i < storeState.size() ; i++ ) {
-        gamma += storeState.at(i) << (storeState.size()-1) - i;
+        gamma += storeState.at(i) << ((storeState.size()-1) - i);
     }
-        
+
+    // If the field had the larger value, it was applicable in each bit
+    // location for gamma.  If it was not, it means it was applicable for
+    // epsilon.  Making epsilon a direct complement of gamma.
     epsilon = ~gamma & 0x0FFF;
     std::cout << "Gamma: " << gamma << " Epsilon: " << epsilon << std::endl;
     std::cout << "Result: " << gamma * epsilon << std::endl;
